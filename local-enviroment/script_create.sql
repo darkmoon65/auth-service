@@ -4,13 +4,13 @@
 */
 
 CREATE TABLE rol (
-    id_rol UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    rol_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(500)
 );
 
 CREATE TABLE users (
-    id_user UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     birthday DATE,
@@ -18,12 +18,12 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(50),
     document VARCHAR(50),
-    id_rol UUID,
-    base_salary NUMERIC(15,2) NOT NULL
-    CONSTRAINT fk_user_rol FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
+    rol_id SERIAL NOT NULL,
+    base_salary NUMERIC(15,2) NOT NULL,
+    CONSTRAINT fk_user_rol FOREIGN KEY (rol_id) REFERENCES rol(rol_id)
 );
 
-INSERT INTO rol (id_rol, nombre, descripcion)
+INSERT INTO rol (rol_id, name, description)
 VALUES
-    (gen_random_uuid(), 'ADMIN', 'System administrator'),
-    (gen_random_uuid(), 'APPLICANT', 'Applicant user');
+    (1, 'ADMIN', 'System administrator'),
+    (2, 'APPLICANT', 'Applicant user');
