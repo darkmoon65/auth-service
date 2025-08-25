@@ -22,6 +22,16 @@ public class Handler {
                 .body(userUseCase.getAllUsers(), User.class);
     }
 
+    public Mono<ServerResponse> listenGetUserById(ServerRequest serverRequest) {
+        String userId = serverRequest.pathVariable("id");
+
+        return userUseCase.getUserById(userId)
+                .flatMap(user -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(user))
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
     public Mono<ServerResponse> listenCreateUser(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(User.class)
                 .flatMap(userUseCase::saveUser)

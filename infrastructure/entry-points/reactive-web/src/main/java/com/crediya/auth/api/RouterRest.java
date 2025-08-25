@@ -1,5 +1,7 @@
 package com.crediya.auth.api;
 
+import com.crediya.auth.api.config.UserPath;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -10,10 +12,14 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
+@RequiredArgsConstructor
 public class RouterRest {
+    private final UserPath userPath;
+
     @Bean
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return route(GET("/api/usecase/path"), handler::listenGetAllUsers)
-                .andRoute(POST("/api/usecase/otherpath"), handler::listenCreateUser);
+        return route(GET(userPath.getUsers()), handler::listenGetAllUsers)
+                .andRoute(POST(userPath.getUsers()), handler::listenCreateUser)
+                .andRoute(GET(userPath.getUsersById()), handler::listenGetUserById);
     }
 }
