@@ -1,27 +1,24 @@
 package com.crediya.auth.model.user;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@Builder
+@Data
 public class User {
     private String id;
     private String name;
     private String lastname;
-    private Date birthday;
+    private LocalDate birthday;
     private String address;
     private String email;
     private String phone;
     private String document;
-    private String idRol;
+    private Integer idRol;
     private BigDecimal baseSalary;
 }

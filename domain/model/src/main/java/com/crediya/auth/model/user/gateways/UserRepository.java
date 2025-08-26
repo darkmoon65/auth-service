@@ -10,5 +10,5 @@ public interface UserRepository {
 
     Flux<User> getAllUsers();
 
-    Mono<User> getUserById(String id);
+    Mono<User> getUserByEmail(String email);
 }
