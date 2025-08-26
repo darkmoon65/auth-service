@@ -11,14 +11,6 @@ spring:
       path: "/h2"
   profiles:
     include: null
-  db:
-    postgres:
-      host: "localhost"
-      port: 5432
-      database: "auth_db"
-      schema: "public"
-      username: "postgres"
-      password: "pass123"
 management:
   endpoints:
     web:
@@ -34,4 +26,13 @@ cors:
 routes:
   paths:
     users: "/api/v1/users"
-    usersById: "/api/v1/users/{id}"
+    usersById: "/api/v1/users/{email}"
+
+adapters:
+  r2dbc:
+    host: "localhost"
+    port: 5432
+    database: "auth_db"
+    schema: "public"
+    username: "postgres"
+    password: "pass123"

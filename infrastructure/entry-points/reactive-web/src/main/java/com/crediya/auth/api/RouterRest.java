@@ -20,6 +20,6 @@ public class RouterRest {
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
         return route(GET(userPath.getUsers()), handler::listenGetAllUsers)
                 .andRoute(POST(userPath.getUsers()), handler::listenCreateUser)
-                .andRoute(GET(userPath.getUsersById()), handler::listenGetUserById);
+                .andRoute(GET(userPath.getUsersById()), handler::listenGetUserByEmail);
     }
 }
