@@ -1,22 +1,26 @@
 package com.crediya.auth.r2dbc;
 
+import com.crediya.auth.model.user.User;
+import com.crediya.auth.r2dbc.entity.UserEntity;
+import com.crediya.auth.r2dbc.utils.UserTestSyntheticData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.reactivecommons.utils.ObjectMapper;
-import org.springframework.data.domain.Example;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.math.BigDecimal;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MyReactiveRepositoryAdapterTest {
-    // TODO: change four you own tests
 
     @InjectMocks
     UserReactiveRepositoryAdapter repositoryAdapter;
@@ -25,54 +29,55 @@ class MyReactiveRepositoryAdapterTest {
     UserReactiveRepository repository;
 
     @Mock
+    private TransactionalOperator transactionalOperator;
+
+    @Mock
     ObjectMapper mapper;
 
     @Test
-    void mustFindValueById() {
+    void mustFindValueByEmail() {
+        UserEntity entityUser = UserTestSyntheticData.buildEntity();
+        User modelUser = UserTestSyntheticData.buildModel();
 
-        when(repository.findById("1")).thenReturn(Mono.just("test"));
-        when(mapper.map("test", Object.class)).thenReturn("test");
-
-        Mono<Object> result = repositoryAdapter.findById("1");
+        when(repository.findByEmail("test@email.com")).thenReturn(Mono.just(modelUser));
+        Mono<User> result = repositoryAdapter.getUserByEmail("test@email.com");
 
         StepVerifier.create(result)
-                .expectNextMatches(value -> value.equals("test"))
+                .expectNext(modelUser)
                 .verifyComplete();
     }
 
     @Test
     void mustFindAllValues() {
-        when(repository.findAll()).thenReturn(Flux.just("test"));
-        when(mapper.map("test", Object.class)).thenReturn("test");
+        UserEntity entityUser = UserTestSyntheticData.buildEntity();
+        User modelUser = UserTestSyntheticData.buildModel();
 
-        Flux<Object> result = repositoryAdapter.findAll();
+        when(repository.findAll()).thenReturn(Flux.just(entityUser));
+        when(mapper.map(entityUser, User.class)).thenReturn(modelUser);
 
-        StepVerifier.create(result)
-                .expectNextMatches(value -> value.equals("test"))
-                .verifyComplete();
-    }
-
-    @Test
-    void mustFindByExample() {
-        when(repository.findAll(any(Example.class))).thenReturn(Flux.just("test"));
-        when(mapper.map("test", Object.class)).thenReturn("test");
-
-        Flux<Object> result = repositoryAdapter.findByExample("test");
+        Flux<User> result = repositoryAdapter.findAll();
 
         StepVerifier.create(result)
-                .expectNextMatches(value -> value.equals("test"))
+                .expectNextMatches(value ->
+                        value.getId().equals("1") &&
+                                value.getName().equals("Juan") &&
+                                value.getLastname().equals("Pérez") &&
+                                value.getBaseSalary().compareTo(BigDecimal.valueOf(2500.00)) == 0
+                )
                 .verifyComplete();
     }
 
     @Test
     void mustSaveValue() {
-        when(repository.save("test")).thenReturn(Mono.just("test"));
-        when(mapper.map("test", Object.class)).thenReturn("test");
+        UserEntity entityUser = UserTestSyntheticData.buildEntity();
+        User modelUser = UserTestSyntheticData.buildModel();
 
-        Mono<Object> result = repositoryAdapter.save("test");
+        when(transactionalOperator.execute(any())).thenReturn(Flux.just(modelUser));
+
+        Mono<User> result = repositoryAdapter.saveUser(modelUser);
 
         StepVerifier.create(result)
-                .expectNextMatches(value -> value.equals("test"))
+                .expectNext(modelUser)
                 .verifyComplete();
     }
 }
