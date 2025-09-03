@@ -16,9 +16,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
         Map<String, Object> error = new HashMap<>();
         error.put("datetime", LocalDateTime.now());
-        error.put("status", HttpStatus.BAD_REQUEST.value());
-        error.put("error", "Bad Request");
         error.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(UserValidationException.class)
+    public ResponseEntity<ErrorResponse> handleUserValidationException(UserValidationException ex) {
+        ErrorResponse error = new ErrorResponse();
+        error.setDatetime(LocalDateTime.now());
+        error.setErrors(ex.getFieldErrors());
 
         return ResponseEntity.badRequest().body(error);
     }

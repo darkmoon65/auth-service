@@ -3,6 +3,7 @@ package com.crediya.auth.api.config;
 import com.crediya.auth.api.Handler;
 import com.crediya.auth.api.RouterRest;
 import com.crediya.auth.api.mapper.UserDtoMapper;
+import com.crediya.auth.api.validation.UserValidator;
 import com.crediya.auth.usecase.user.UserUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ class ConfigTest {
 
     @MockitoBean
     private UserDtoMapper userDtoMapper;
+
+    @MockitoBean
+    private UserValidator userValidator;
 
     @TestConfiguration
     static class TestConfig {

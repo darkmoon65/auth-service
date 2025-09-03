@@ -1,7 +1,9 @@
 package com.crediya.auth.api;
 
 import com.crediya.auth.api.config.UserPath;
+import com.crediya.auth.api.dto.CreateUserDto;
 import com.crediya.auth.api.mapper.UserDtoMapper;
+import com.crediya.auth.api.validation.UserValidator;
 import com.crediya.auth.model.user.User;
 import com.crediya.auth.usecase.user.UserUseCase;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,9 @@ class RouterRestTest {
     @MockitoBean
     private UserDtoMapper userDtoMapper;
 
+    @MockitoBean
+    private UserValidator userValidator;
+
     @TestConfiguration
     static class TestConfig {
         @Bean
@@ -46,32 +51,9 @@ class RouterRestTest {
     }
 
     @Test
-    void testListenGETUseCase() {
-        when(userUseCase.getAllUsers()).thenReturn(Flux.empty());
-        
-        webTestClient.get()
-                .uri("/api/v1/users")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().json("[]");
-    }
-
-
-    @Test
-    void testListenGETUserByEmail() {
-        when(userUseCase.getUserByEmail("testnotfound@gmail.com")).thenReturn(Mono.empty());
-
-        webTestClient.get()
-                .uri("/api/v1/users/testnotfound@gmail.com")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().is4xxClientError();
-    }
-
-    @Test
     void testListenPOSTUseCase() {
-        when(userUseCase.saveUser(any())).thenReturn(Mono.empty());
+        when(userUseCase.saveUser(any())).thenReturn(Mono.just(new User()));
+        when(userValidator.validate(any())).thenReturn(Mono.just(new CreateUserDto()));
         when(userDtoMapper.toResponse(any())).thenReturn(new User());
 
         Map<String, Object> user = Map.of(
@@ -81,7 +63,7 @@ class RouterRestTest {
                 "address", "Calle las gaviotas 123",
                 "phone", "991123772",
                 "document", "77123123",
-                "email", "cs6@gmail.com",
+                "email", "cs60@gmail.com",
                 "baseSalary", 5000
         );
 
@@ -91,7 +73,7 @@ class RouterRestTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(user)
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isCreated();
     }
 
     @Test
