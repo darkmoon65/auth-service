@@ -1,13 +1,21 @@
 package com.crediya.auth.config;
 
+import com.crediya.auth.model.user.gateways.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest(classes = UseCasesConfig.class)
 public class UseCasesConfigTest {
+
+    @MockitoBean
+    private UserRepository userRepository;
 
     @Test
     void testUseCaseBeansExist() {
@@ -16,7 +24,8 @@ public class UseCasesConfigTest {
 
             boolean useCaseBeanFound = false;
             for (String beanName : beanNames) {
-                if (beanName.endsWith("UseCase")) {
+                Object bean = context.getBean(beanName);
+                if (bean.getClass().getSimpleName().endsWith("UseCase")) {
                     useCaseBeanFound = true;
                     break;
                 }
@@ -31,8 +40,8 @@ public class UseCasesConfigTest {
     static class TestConfig {
 
         @Bean
-        public MyUseCase myUseCase() {
-            return new MyUseCase();
+        public UserRepository userRepository() {
+            return org.mockito.Mockito.mock(UserRepository.class);
         }
     }
 

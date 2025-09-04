@@ -1,9 +1,9 @@
-name: crediya-csversion
+name: crediya-auth-cs
 
 services:
   postgres-db:
     image: postgres:16.8
-    container_name: crediya-db
+    container_name: crediya-db-auth
     restart: always
     environment:
       POSTGRES_PASSWORD: pass123
