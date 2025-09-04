@@ -1,7 +1,5 @@
 package com.crediya.auth.api.exception;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Map;
 
 public class UserValidationException extends RuntimeException {
