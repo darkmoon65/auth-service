@@ -1,7 +1,18 @@
 package com.crediya.auth.security.exception;
 
-public class TokenValidationException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class TokenValidationException extends AuthenticationException {
     public TokenValidationException() {
         super("Unauthorized");
+    }
+
+
+    public TokenValidationException(String message) {
+        super(message);
+    }
+
+    public TokenValidationException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

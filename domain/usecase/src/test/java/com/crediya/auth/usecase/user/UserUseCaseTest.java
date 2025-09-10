@@ -1,6 +1,8 @@
 package com.crediya.auth.usecase.user;
 
 import com.crediya.auth.model.user.User;
+import com.crediya.auth.model.user.dto.LogInDTO;
+import com.crediya.auth.model.user.dto.TokenDTO;
 import com.crediya.auth.model.user.gateways.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,7 @@ public class UserUseCaseTest {
         testUser = new User();
         testUser.setEmail("cs@gmail.com");
         testUser.setBaseSalary(BigDecimal.valueOf(6000));
+        testUser.setPassword("pass123");
 
         testUser2 = new User();
         testUser2.setEmail("cs2@gmail.com");
@@ -147,5 +150,16 @@ public class UserUseCaseTest {
                 .verifyComplete();
 
         verify(userRepository).getUserByEmail(email);
+    }
+
+    @Test
+    void testLoginOk() {
+        LogInDTO dto = new LogInDTO("cs@gmail.com", "pass123");
+
+        when(userRepository.login(dto)).thenReturn(Mono.just(new TokenDTO("FAKETOKEN123")));
+        
+        StepVerifier.create(userUseCase.login(dto))
+                .assertNext(tokenDto -> assertThat(tokenDto.token()).isEqualTo("FAKETOKEN123"))
+                .verifyComplete();
     }
 }

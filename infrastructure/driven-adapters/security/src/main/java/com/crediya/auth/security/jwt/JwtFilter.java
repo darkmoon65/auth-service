@@ -9,13 +9,28 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class JwtFilter implements WebFilter {
+
+    private static final List<String> WHITELIST = Arrays.asList(
+            "/api/v1/auth",
+            "/v3/api-docs",
+            "/swagger-ui",
+            "/swagger-ui.html"
+    );
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getPath().value();
+
+        boolean isWhitelisted = WHITELIST.stream().anyMatch(path::startsWith);
+        if (isWhitelisted) {
+            return chain.filter(exchange);
+        }
 
         if (path.contains("auth")) {
             return chain.filter(exchange);
