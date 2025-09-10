@@ -25,6 +25,8 @@ public class UserEntity {
     private String address;
     @NonNull
     private String email;
+    @NonNull
+    private String password;
     private String phone;
     private String document;
     @Column("rol_id")

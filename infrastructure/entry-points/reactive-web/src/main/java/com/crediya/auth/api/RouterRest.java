@@ -56,6 +56,7 @@ public class RouterRest {
                             ))
             })
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return route(POST(userPath.getUsers()), handler::listenCreateUser);
+        return route(POST(userPath.getUsers()), handler::listenCreateUser)
+                .andRoute(POST("/api/v1/auth/login"), handler::logIn);
     }
 }
