@@ -36,3 +36,7 @@ adapters:
     schema: "public"
     username: "postgres"
     password: "pass123"
+
+jwt:
+  secret: bXludWV2YWtleXN1cGVyc2VndXJhY3JlZGl5YWRvdGNvbXByYWdt
+  expiration: 3600000

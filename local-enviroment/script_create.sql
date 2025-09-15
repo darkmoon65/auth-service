@@ -16,6 +16,7 @@ CREATE TABLE users (
     birthday DATE,
     address VARCHAR(255),
     email VARCHAR(255) NOT NULL,
+    password VARCHAR(1024) NOT NULL,
     phone VARCHAR(50),
     document VARCHAR(50),
     rol_id SERIAL NOT NULL,

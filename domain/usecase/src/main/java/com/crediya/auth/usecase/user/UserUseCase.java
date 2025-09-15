@@ -1,6 +1,8 @@
 package com.crediya.auth.usecase.user;
 
 import com.crediya.auth.model.user.User;
+import com.crediya.auth.model.user.dto.LogInDTO;
+import com.crediya.auth.model.user.dto.TokenDTO;
 import com.crediya.auth.model.user.gateways.UserRepository;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -40,6 +42,10 @@ public class UserUseCase {
 
     public Mono<User> getUserByEmail(String email) {
         return userRepository.getUserByEmail(email);
+    }
+
+    public Mono<TokenDTO> login(LogInDTO dto) {
+        return userRepository.login(dto);
     }
 }
 
