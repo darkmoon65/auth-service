@@ -2,10 +2,8 @@ package com.crediya.auth.api;
 
 import com.crediya.auth.api.dto.CreateUserDto;
 import com.crediya.auth.model.user.dto.LogInDTO;
-import com.crediya.auth.model.user.dto.TokenDTO;
 import com.crediya.auth.api.mapper.UserDtoMapper;
 import com.crediya.auth.api.validation.UserValidator;
-import com.crediya.auth.security.exception.LoginValidationException;
 import com.crediya.auth.usecase.user.UserUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
