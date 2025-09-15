@@ -48,5 +48,13 @@ public class Handler {
                 );
     }
 
+    public Mono<ServerResponse> getUserByEmail(ServerRequest request) {
+        String email = request.pathVariable("email");
 
+        return userUseCase.getUserByEmail(email)
+                .flatMap(user -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(user))
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
 }
