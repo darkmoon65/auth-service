@@ -28,3 +28,17 @@ INSERT INTO rol (rol_id, name, description)
 VALUES
     (1, 'ADMIN', 'System administrator'),
     (2, 'APPLICANT', 'Applicant user');
+
+INSERT INTO users (name, lastname, birthday, address, email, password, phone, document, rol_id, base_salary)
+VALUES (
+    'Admin name',
+    'Admin lastname',
+    '1994-01-01',
+    'Calle las manzanas 123',
+    'admin@system.com',
+    '$2y$10$DpqdilkhvZHT7BFKLIOt.OCFz8XBVCXbrChr5m75T2xrMmcDPEkea',
+    '99123123',
+    '77123123',
+    1,
+    7000.00
+);

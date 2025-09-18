@@ -1,6 +1,8 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT}
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: "auth-service"
   devtools:
@@ -21,7 +23,7 @@ management:
       probes:
         enabled: true
 cors:
-  allowed-origins: "http://localhost:4200,http://localhost:8080"
+  allowed-origins: ${CORS_ALLOWED_ORIGINS}
 
 routes:
   paths:
@@ -30,13 +32,12 @@ routes:
 
 adapters:
   r2dbc:
-    host: "localhost"
-    port: 5432
-    database: "auth_db"
-    schema: "public"
-    username: "postgres"
-    password: "pass123"
-
+    host: ${DB_HOST}
+    port: ${DB_PORT}
+    database: ${DB_NAME}
+    schema: ${DB_SCHEMA}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 jwt:
-  secret: bXludWV2YWtleXN1cGVyc2VndXJhY3JlZGl5YWRvdGNvbXByYWdt
-  expiration: 3600000
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
